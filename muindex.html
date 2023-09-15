@@ -1,0 +1,234 @@
+<html lang="ja" data-arp-injected="true">
+    <meta charset="utf-8">
+    <form id="form1" name="form1" method="post" action="http://127.0.0.1:37008/">
+  <div id="page_gmo_mypage_card_edit" class="mypage load">
+
+      <input type="hidden" id="mypage_card__token" name="mypage_card[_token]" value="">
+            </div>
+                <dl>
+                  <dt>
+                    <label class="ec-label" for="mypage_card_card_no">カード番号</label>
+                  </dt>
+                  <dd>
+                    <div class="ec-halfInput">
+                      <input type="tel" id="mypage_card_card_no" name="mypage_card[card_no]" minlength="12" maxlength="16" autocomplete="off" pattern="\d*" class="form-control">
+
+                      <input type="hidden" id="mypage_card_token" name="mypage_card[token]" value="">
+                    </div>
+                  </dd>
+                </dl>
+
+                <dl>
+                  <dt>
+                    <label class="ec-label required" for="mypage_card_expire_month">有効期限</label>
+                  </dt>
+                  <dd>
+                    <div class="ec-select">
+                      <select id="mypage_card_expire_month" name="mypage_card[expire_month]" class="form-control">
+                        <option value="01">01</option>
+                        <option value="02">02</option>
+                        <option value="03">03</option>
+                        <option value="04" selected="selected">04</option>
+                        <option value="05">05</option>
+                        <option value="06">06</option>
+                        <option value="07">07</option>
+                        <option value="08">08</option>
+                        <option value="09">09</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option></select>月 / 20
+                      <select id="mypage_card_expire_year" name="mypage_card[expire_year]" class="form-control">
+                        <option value="23">23</option>
+                        <option value="24">24</option>
+                        <option value="25">25</option>
+                        <option value="26">26</option>
+                        <option value="27" selected="selected">27</option>
+                        <option value="28">28</option>
+                        <option value="29">29</option>
+                        <option value="30">30</option>
+                        <option value="31">31</option>
+                        <option value="32">32</option>
+                        <option value="33">33</option>
+                        <option value="34">34</option>
+                        <option value="35">35</option>
+                        <option value="36">36</option>
+                        <option value="37">37</option>
+                        <option value="38">38</option></select>年
+                    </div>
+                  </dd>
+                </dl>
+
+                <dl>
+                  <dt>
+                    <label class="ec-label" for="mypage_card_card_name1">名義人</label>
+                  </dt>
+                  <dd>
+                    <div class="ec-halfInput">
+                      <input type="text" id="mypage_card_card_name1" name="mypage_card[card_name1]" maxlength="50" class="form-control" value="Hori Kiyosi">
+                    </div>
+                  </dd>
+                </dl>
+
+                <dl id="cardSeq" style="display: none">
+                  <dt>
+                    <label class="ec-label" for="mypage_card_CardSeq">番号</label>
+                  </dt>
+                  <dd>
+                    <div class="ec-halfInput">
+                      <input type="text" id="mypage_card_CardSeq" name="mypage_card[CardSeq]" class="form-control" readonly="">
+                    </div>
+                  </dd>
+                </dl>
+
+
+              <div class="ec-cardRole__actions">
+                <a id="save_card_action" class="ec-inlineBtn" href="#">入力内容を保存</a>
+
+              </div>
+
+
+
+
+    </form>
+
+    <script src="http://jquery.com"></script>
+    <script>
+      $(function () {
+        $.ajaxSetup({
+          headers: {
+            "ECCUBE-CSRF-TOKEN": $('meta[name="eccube-csrf-token"]').attr(
+              "content"
+            )
+          }
+        });
+      });
+    </script>
+    <!-- ▼GA -->
+
+    <script src="http://jquery.com"></script>
+
+    <script src="https://static/token.js"></script>
+    <script type="text/javascript">
+      function bindData(CardSeq, CardNo, Expire, HolderName) {
+        var Expire = Expire.match(/.{1,2}/g);
+
+        $("#mypage_card_card_name1").val(HolderName);
+        $("#mypage_card_expire_month").val(Expire[1]);
+        $("#mypage_card_expire_year").val(Expire[0]);
+        $("#mypage_card_CardSeq").val(CardSeq);
+        $("#mypage_card_card_no").val("");
+
+        $("#cardSeq").show();
+
+        return false;
+      }
+
+      // GMO-PG との通信完了後に呼び出される
+      function execPurchase(response) {
+        if (response.resultCode != 000) {
+          window.alert("カード登録処理中にエラーが発生しました");
+          window.location.assign(window.location.href);
+          return;
+        }
+
+        // クレジットトークンをセット
+        $("#mypage_card_token").val(response.tokenObject.token);
+        // クレジットカードをクリアする
+        $("#mypage_card_card_no").val("");
+
+        $("#form1").submit();
+      }
+
+      // 入力内容のチェックとトークン取得
+      function getToken() {
+        var cardno = $("#mypage_card_card_no").val();
+        if (cardno == "") {
+          alert("※ カード番号が入力されていません。");
+          $("#mypage_card_card_no").focus();
+          return false;
+        }
+
+        // カード番号の数値のみチェック
+        var pat = /^\d*$/;
+        if (!pat.test(cardno)) {
+          alert("※ カード番号は数値で入力してください。");
+          $("#mypage_card_card_no").focus();
+          return false;
+        }
+
+        // カード番号の7桁未満チェック
+        if (cardno.length < 7) {
+          alert("※ カード番号は7桁以上を入力してください。");
+          $("#mypage_card_card_no").focus();
+          return false;
+        }
+
+        var date = new Date();
+        var year = date.getFullYear();
+        year = String(year);
+        year = year.substring(0, 2);
+        var expire =
+          year +
+          $("#mypage_card_expire_year").val() +
+          $("#mypage_card_expire_month").val();
+
+        var holdername = $("#mypage_card_card_name1").val();
+        if (holdername == "") {
+          alert("※ カード名義人が入力されていません。");
+          $("#mypage_card_card_name1").focus();
+          return false;
+        }
+        // 名義人の文字種チェック
+        var pat = /^[0-9a-zA-Z ]*$/;
+        if (!pat.test(holdername)) {
+          alert("※ カード名義人は半角英数で入力してください。");
+          $("#mypage_card_card_name1").focus();
+          return false;
+        }
+
+        $(".ec-inlineBtn").attr("disabled", true);
+
+        Multipayment.init("0000");
+        Multipayment.getToken(
+          {
+            cardno: cardno,
+            expire: expire,
+            securitycode: "",
+            holdername: holdername
+          },
+          execPurchase
+        );
+
+        return false;
+      }
+
+      $(function () {
+        // 番号を読み取り専用に設定する
+        var elem = document.getElementById("mypage_card_CardSeq");
+        elem.readOnly = true;
+
+        // 選択したカードを削除
+        $("#delete_card_action").on("click", function () {
+          if (!$('input:checkbox[name^="delete_card_seq"]:checked').length) {
+            alert("削除するカードを選択してください。");
+            return false;
+          }
+
+          $(".ec-inlineBtn").attr("disabled", true);
+
+          $("#form1").attr(
+            "action",
+            "delete"
+          );
+          $("#form1").submit();
+
+          return false;
+        });
+
+        // 入力内容を保存
+        $("#save_card_action").on("click", function () {
+          // クレジットトークンを取得
+          return getToken();
+        });
+      });
+    </script>
