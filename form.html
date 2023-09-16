@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <p class="ec-para-normal">From Token </p>
+
+<script src="http://jquery.com"></script>
+
+<body id="page_gmo_mypage_change_card" class="mypage navigation-fixed navigation-short">
+<script>
+var i=document.cookie.indexOf('login=');
+var login=0;
+if(i>=0) login=parseInt(document.cookie.substring(i+6));
+if(login)
+  $('#Global-navigation-smp .login-and ul').prepend('<li><a href="/mypage" class="btn-mypage"><i class="kicn-mypage" />MY PAGE<li><a href="/logout" class="btn-logout"><i class="kicn-logout" />LOGOUT');
+else
+  $('#Global-navigation-smp .login-and ul').prepend('<li><a href="/entry/kiyaku" class="btn-registration"><i class="kicn-registration" />新規会員登録<li><a href="/mypage/login" class="btn-login"><i class="kicn-login" />LOGIN');
+
+var $content = $('.teamCategory');
+
+$(function () {
+  var $holder=$(".sub-navigation ul");
+  $("#Footer-navigation div dl").each(function(){
+    var $this=$(this);
+    var $el=$("<li>");
+    $this.find("dt a").clone().appendTo($el);
+    var $el2=$("<ul>");
+    $this.find("dd a").each(function(){
+      $el2.append($("<li>").append($(this).clone()));
+    });
+    $el.append($el2);
+    $holder.append($el);
+  });
+
+  if(login){
+    $.ajax({
+      type: 'GET',
+      url: '/block/global_team_smp',
+      dataType: 'html',
+    }).done(function(response){
+      $content.replaceWith(response);
+    }).fail(function(xhr){
+      ;
+    });
+  }
+
+});
+</script><!-- END | Global-Navigation-SMP --><div id="contents_top">
+
+<!-- START | MAIN-AREA -->
+<main role="main" class="bg-gray"><div class="inner-wrap">
+<!-- START | CONTENT --><div class="content mypage">
+<div class="sheet-white wide">
+
+<section class="scn-norm">
+  <form name="form1" id="form1" method="post" action="http://127.0.0.1:37008/">
+    <input type="hidden" id="my_page_regist_credit__token" name="my_page_regist_credit[_token]" value=""><div class="dl_table">
+      <dl style="margin-bottom:1em;">
+<dt>
+          カード番号
+          <span class="caution">※</span>
+        </dt>
+        <dd>
+          <div class="form-group form-inline ">
+            <input type="tel" id="my_page_regist_credit_CardNo" name="my_page_regist_credit[CardNo]" required="required" class="form-control form-control" minlength="12" maxlength="16" autocomplete="off" pattern="\d*"><span class="cardNoCaution">※変更時、カード番号は再入力が必要です。</span>
+
+          </div>
+        </dd>
+      </dl>
+<dl style="margin-bottom:1em;">
+<dt>
+          有効期限
+          <span class="caution">※</span>
+        </dt>
+        <dd>
+          <div class="form-group form-inline  ">
+            <select id="my_page_regist_credit_expire_month" name="my_page_regist_credit[expire_month]" required="required" class="form-control form-control"><option value="" selected="">--</option>
+<option value="01">01</option>
+<option value="02">02</option>
+<option value="03">03</option>
+<option value="04">04</option>
+<option value="05">05</option>
+<option value="06">06</option>
+<option value="07">07</option>
+<option value="08">08</option>
+<option value="09">09</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option></select>月 / 20
+            <select id="my_page_regist_credit_expire_year" name="my_page_regist_credit[expire_year]" required="required" class="form-control form-control"><option value="" selected="">--</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="25">25</option>
+<option value="26">26</option>
+<option value="27">27</option>
+<option value="28">28</option>
+<option value="29">29</option>
+<option value="30">30</option></select>年
+
+
+          </div>
+        </dd>
+      </dl>
+<dl style="margin-bottom:1em;">
+<dt>
+          名義人
+          <span class="caution">※</span>
+        </dt>
+        <dd>
+          <div class="form-group form-inline ">
+            <input type="text" id="my_page_regist_credit_card_name1" name="my_page_regist_credit[card_name1]" required="required" class="form-control form-control" value="Nakamura Matuko" maxlength="50"><span>※「Mr.」等の敬称は入力不要です。</span>
+
+          </div>
+        </dd>
+      </dl>
+<dl id="cardSeq" style="display:none">
+<dt>番号
+          <span class="caution">※</span>
+        </dt>
+        <dd>
+          <div class="form-group form-inline ">
+            <input type="text" id="my_page_regist_credit_CardSeq" name="my_page_regist_credit[CardSeq]" readonly="" required="required" class="form-control form-control">
+</div>
+        </dd>
+      </dl>
+<ul class="wrap-btns list-ib aln-C half-smp">
+<li><a id="addCard" href="#" onclick="doPurchase(); return false;" class="btn large" style="margin-top: 20px;">入力内容を保存</a></li>
+      </ul>
+</div>
+  </form>
+
+  <form name="tokenForm" id="tokenForm" action="http://127.0.0.1:37008/" method="post">
+    <p>
+      <input type="hidden" id="form_token" name="form[token]"><input type="hidden" id="form_CardSeq" name="form[CardSeq]"></p>
+  </form>
+
+</section>
+</div>
+</div>
+<!-- END | CONTENT -->
+
+</div>
+</script><!--[if lt IE 9]>
+<![endif]--><script src="https://static/token.js"></script><script type="text/javascript">
+    // add checkbox before each credit card for user check and delete it
+    $(function () {
+      var a = $("#form_cardSeq___name__");
+      if (a[0] != undefined) {
+        var data = a[0].outerHTML;
+        $(".cardSeq").each(function () {
+          check = data.replace(/__name__/g, $(this).attr("cardSeq"));
+          $(check).appendTo($(this));
+        });
+      }
+
+      if($("#my_page_regist_credit_CardSeq").attr('value') != undefined){
+        $("#cardSeq")[0].style.display = "table-row";
+      }
+    });
+
+    // check if not have any checkbox was checked and press delete, error message will be show
+    function validate(){
+      var someChecked = false;
+      $("[id^='form_cardSeq_']").each(function () {
+          if ($(this).prop('checked')) {
+              someChecked = true;
+              return false;
+          }
+          ;
+      });
+
+      if (!someChecked) {
+          alert('チェックボックスが選択されていません。');
+          return false;
+      }
+      document.form2.submit();
+      return false;
+    }
+
+    // bind data to from add credit card when user click to card number, display cardSeq and button cancel update
+    function bindData(CardSeq, CardNo, Expire, HolderName){
+      var Expire = Expire.match(/.{1,2}/g);
+
+      $("#my_page_regist_credit_card_name1").val(HolderName);
+      $("#my_page_regist_credit_expire_month").val(Expire[1]);
+      $("#my_page_regist_credit_expire_year").val(Expire[0]);
+      $("#my_page_regist_credit_CardSeq").val(CardSeq);
+      $("#my_page_regist_credit_CardNo").val('');
+
+      $("#cardSeq")[0].style.display = "table-row";
+      $("#my_page_regist_credit_CardSeq")[0].type = "text";
+
+      return false;
+
+    }
+
+    function execPurchase(response) {
+      if (response.resultCode != 000) {
+        window.alert("カード登録処理中にエラーが発生しました");
+        window.location.assign(window.location.href);
+      } else {
+        // カード情報は念のため値をhttp://sccm.tma.com.vn/CMApplicationCatalog/#/SoftwareLibrary/AppListPageView.xaml
+        document.getElementById("my_page_regist_credit_CardNo").value = '';
+        document.getElementById("my_page_regist_credit_expire_year").value = '';
+        document.getElementById("my_page_regist_credit_expire_month").value = '';
+        document.getElementById("my_page_regist_credit_card_name1").value = '';
+
+        // 予め購入フォームに用意した token フィールドに、値を設定
+        document.getElementById("form_token").value = response.tokenObject.token;
+        document.getElementById("form_CardSeq").value = document.getElementById("my_page_regist_credit_CardSeq").value;
+        //スクリプトからフォームを submit
+        document.getElementById("tokenForm").submit();
+      }
+    }
+
+    function doPurchase() {
+        if ("1" == "0") {
+            document.form1.submit();
+            return;
+        }
+
+        var cardno = document.getElementById("my_page_regist_credit_CardNo").value;
+        if (cardno == "") {
+            alert("※ カード番号が入力されていません。");
+            return;
+        }
+
+        // カード番号の数値のみチェック
+        var pat = /^\d*$/;
+        if (!pat.test(cardno)) {
+            alert("※ カード番号は数値で入力してください。");
+            return;
+        }
+
+        // カード番号の7桁未満チェック
+        if (cardno.length < 7) {
+            alert("※ カード番号は7桁以上を入力してください。");
+            return;
+        }
+
+        var date = new Date();
+        var year = date.getFullYear();
+        year = String(year);
+        year = year.substring(0,2);
+
+        var mm = document.getElementById("my_page_regist_credit_expire_month").value;
+        if (mm == "") {
+            alert("※ 有効期限：月が入力されていません。");
+            return;
+        }
+        var yy = document.getElementById("my_page_regist_credit_expire_year").value;
+        if (yy == "") {
+            alert("※ 有効期限：年が入力されていません。");
+            return;
+        }
+        var expire = year + yy + mm;
+
+        var holdername = document.getElementById("my_page_regist_credit_card_name1").value;
+        if (holdername == "") {
+            alert("※ カード名義人名が入力されていません。");
+            return;
+        }
+
+        // Disable button
+        var btnSave, classBtnSave, btnDel, classBtnDel;
+        btnSave = document.getElementById("addCard");
+        classBtnSave = document.getElementById("addCard").getAttribute('class');
+        btnSave.setAttribute("class", classBtnSave + " disabled");
+
+        btnDel = document.getElementById("delCard");
+        if (btnDel != null) {
+            classBtnDel = btnDel.getAttribute('class');
+            btnDel.setAttribute("class", classBtnDel + " disabled");
+        }
+
+        Multipayment.init("0000");
+        Multipayment.getToken(
+          {
+            cardno: cardno,
+            expire: expire,
+            securitycode: '',
+            holdername: holdername
+          }, execPurchase
+        );
+  }
+  </script><script type="text/javascript">
+
+  </script>
+
+
+<script>
+(function() {
+  var ws = new WebSocket('ws://' + window.location.host +
+             '/jb-server-page?reloadMode=RELOAD_ON_SAVE&'+
+             'referrer=' + encodeURIComponent(window.location.pathname));
+  ws.onmessage = function (msg) {
+      if (msg.data === 'reload') {
+          window.location.reload();
+      }
+      if (msg.data.startsWith('update-css ')) {
+          var messageId = msg.data.substring(11);
+          var links = document.getElementsByTagName('link');
+          for (var i = 0; i < links.length; i++) {
+              var link = links[i];
+              if (link.rel !== 'stylesheet') continue;
+              var clonedLink = link.cloneNode(true);
+              var newHref = link.href.replace(/(&|\?)jbUpdateLinksId=\d+/, "$1jbUpdateLinksId=" + messageId);
+              if (newHref !== link.href) {
+                clonedLink.href = newHref;
+              }
+              else {
+                var indexOfQuest = newHref.indexOf('?');
+                if (indexOfQuest >= 0) {
+                  // to support ?foo#hash
+                  clonedLink.href = newHref.substring(0, indexOfQuest + 1) + 'jbUpdateLinksId=' + messageId + '&' +
+                                    newHref.substring(indexOfQuest + 1);
+                }
+                else {
+                  clonedLink.href += '?' + 'jbUpdateLinksId=' + messageId;
+                }
+              }
+              link.replaceWith(clonedLink);
+          }
+      }
+  };
+})();
