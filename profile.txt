@@ -1,4 +1,4 @@
-profile = {
+{
     "site_id": 21,  # 平台ID
     # "site_url": "http://ip-api.com/json/?lang=zh-CN ",  # todo 指定平台 URL 必填
     "site_url": "https://www.browserscan.net/",  # todo 指定平台 URL 必填
