@@ -1,5 +1,5 @@
 {
-"site_url": "http://ip-api.com/json/?lang=zh-CN ",  # todo 指定平台 URL 必填
+"site_url": "chrome://settings/help",  # todo 指定平台 URL 必填
 "note": "",  # 备注
 "group_id": 23661,  # 群组ID 默认selenium
 "username": "",  #
